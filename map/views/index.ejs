@@ -21,27 +21,61 @@ var mapOptions = {
     center: new naver.maps.LatLng(37.3595704, 127.105399),
     zoom: 10
 };
-
 var map = new naver.maps.Map('map', mapOptions);
 
-marker = new naver.maps.Marker({
-  map:map,
-  position:new naver.maps.LatLng(37.3595704, 127.105399),
-  icon: {
-    content: "<div class='marker></div>"
-  }
-})
+var markerList = [];
+var infowindowList = [];
 
 for(var i in data){
   var target = data[i];
-  var latlng =new naver.maps.LatLng(target.lat,target.lng);
+  var latlng =new naver.maps.LatLng(target.lat, target.lng);
   marker =new naver.maps.Marker({
     map : map,
     position : latlng,
     icon:{
-      content:"<div class='marker></div>"
-    }
+      content:"<div class='marker'></div>",
+      anchor : new naver.maps.Point(12,12)
+    },
+  });
+
+  var content = `<div class = 'infowindow_wrap'>
+    <div class='infowindow_title'>${target.title}</div>
+    <div class='infowindow_content'>${target.content}</div>
+    <div class='infowindow_date'>${target.date}</div>
+  </div>`
+
+  var infowindow = new naver.maps.InfoWindow({
+    content: content,
+    backgroundColor: "#00ff0000",
+    borderColor: "00ff0000",
+    anchorSize : new naver.maps.Size(0,0)
   })
+
+  markerList.push(marker);
+  infowindowList.push(infowindow);
+}
+for(var i =0, ii=markerList.length; i < ii ; i++){
+    naver.maps.Event.addListener(map,"click", ClickMap(i));
+    naver.maps.Event.addListener(markerList[i],"click",getClickHandler(i));
+}
+
+function ClickMap(i){
+  return function() {
+    var infowindow = infowindowList[i];
+    infowindow.close();
+  }
+}
+
+function getClickHandler(i){
+  return function(){
+    var marker = markerList[i];
+    var infowindow = infowindowList[i];
+    if (infowindow.getMap()){
+      infowindow.close();
+    }else{
+      infowindow.open(map,marker)
+    }
+  }
 }
 </script>
 </body>
