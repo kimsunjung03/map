@@ -41,12 +41,16 @@ app.use(function(err, req, res, next) {
 });
 
 var url = 'http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson';
-var queryParams = '?' + encodeURIComponent('') + '=서비스키'; /* Service Key*/
-queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /* */
-queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('10'); /* */
-queryParams += '&' + encodeURIComponent('startCreateDt') + '=' + encodeURIComponent('20200310'); /* */
-queryParams += '&' + encodeURIComponent('endCreateDt') + '=' + encodeURIComponent('20200315'); /* */
 
+/*
+var queryParams = '?' + encodeURIComponent('ServiceKey') + '=';
+queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); 
+queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('10');
+queryParams += '&' + encodeURIComponent('startCreateDt') + '=' + encodeURIComponent('20200310'); 
+queryParams += '&' + encodeURIComponent('endCreateDt') + '=' + encodeURIComponent('20200315'); 
+*/
+
+/*
 request({
     url: url + queryParams,
     method: 'GET'
@@ -55,5 +59,21 @@ request({
     console.log('Headers', JSON.stringify(response.headers));
     console.log('Reponse received', body);
 });
+*/
+request.get(requestUrl, (err,res,body) =>{
+  if(err){
+      console.log(`err => ${err}`)
+  }
+  else {
+      if(res.statusCode == 200){
+          var result = body
+          console.log(`body data => ${result}`)
+          var xmlToJson = convert.xml2json(result, {compact: true, spaces: 4});
+          console.log(`xml to json => ${xmlToJson}`)
+
+      }
+
+  }
+})
 
 module.exports = app;
