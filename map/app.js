@@ -40,26 +40,19 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-var url = 'http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson';
+var HOST = 'http://openapi.data.go.kr/openapi/service/rest';
+var SERVICE_KEY = 'uCW0%2F%2F3vtXFmlAAId54uHKiR75i6%2Fp%2FuRlosel9n3TRReR6IyvTdvrODwIila%2F%2B%2FnFSFWffI49O6W%2BtZQ%2B8inw%3D%3D';
 
-/*
-var queryParams = '?' + encodeURIComponent('ServiceKey') + '=';
+/* 
+var queryParams = '?' + encodeURIComponent('ServiceKey') + '=uCW0%2F%2F3vtXFmlAAId54uHKiR75i6%2Fp%2FuRlosel9n3TRReR6IyvTdvrODwIila%2F%2B%2FnFSFWffI49O6W%2BtZQ%2B8inw%3D%3D';
 queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); 
 queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('10');
 queryParams += '&' + encodeURIComponent('startCreateDt') + '=' + encodeURIComponent('20200310'); 
 queryParams += '&' + encodeURIComponent('endCreateDt') + '=' + encodeURIComponent('20200315'); 
 */
 
-/*
-request({
-    url: url + queryParams,
-    method: 'GET'
-}, function (error, response, body) {
-    console.log('Status', response.statusCode);
-    console.log('Headers', JSON.stringify(response.headers));
-    console.log('Reponse received', body);
-});
-*/
+var requestUrl = `${HOST}/Covid19/getCovid19InfStateJson?ServiceKey=${SERVICE_KEY}&pageNo=1&numOfRows=10&startCreateDt=20200310&endCreateDt=20200315`
+
 request.get(requestUrl, (err,res,body) =>{
   if(err){
       console.log(`err => ${err}`)
